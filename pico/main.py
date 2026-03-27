@@ -4,15 +4,17 @@ import network
 import urequests
 
 
-WIFI_SSID = "iot kids"
-WIFI_PASSWORD = "bright kidoos"
+WIFI_SSID = "S24 FE"
+WIFI_PASSWORD = "password"
 
-SERVER_IP_URL = "http://10.189.178.236:8000/"
+SERVER_IP_URL = "http://10.64.61.247:8000/"
 
 
-servo1 = PWM(Pin(17),freq=50)
-min_time = 500000 # 50000 nano sec/ 0.5 ms
-max_time = 2500000 # 2.5 ms
+servo1 = PWM(Pin(17))
+servo1.freq(50)
+
+min_time = 500000
+max_time = 2500000
 
 last_feed_time = 0
 
@@ -24,7 +26,7 @@ wifi_status = False
 
 
 def servo1_move(angle):
-    duty=angle/180*(max_time-min_time)+min_time
+    duty = angle / 180 * (max_time - min_time) + min_time
     servo1.duty_ns(int(duty))
 
 
@@ -68,7 +70,7 @@ def servo_on(angle, delay):
 
 def get_data():
 
-    url = SERVER_IP_URL + "api/send-relay/"
+    url = SERVER_IP_URL + "send-relay/"
     
     try:
         r = urequests.get(url)
@@ -83,9 +85,9 @@ def get_data():
             
 def main():
     while True:
-
-        connect_wifi()
-
+        if not wifi_status:
+            connect_wifi()
+            
         if wifi_status:
             data = get_data()
             status = data.get("status")

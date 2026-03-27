@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class scheduler (models.Model):
@@ -9,5 +10,5 @@ class scheduler (models.Model):
     
     
 class LastFoodTime(models.Model):
-    last_food = models.IntegerField()
+    last_food = models.DateTimeField(default=timezone.now)
     

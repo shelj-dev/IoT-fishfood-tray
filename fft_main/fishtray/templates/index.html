@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart Fish Feeder</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin:0;
+  height:100vh;
+  background: linear-gradient(180deg,#021B79,#0575E6);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:Poppins;
+  color:white;
+}
+
+/* Glass UI */
+.card {
+  width:360px;
+  padding:30px;
+  border-radius:20px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(20px);
+  text-align:center;
+  box-shadow:0 10px 40px rgba(0,0,0,0.5);
+}
+
+button {
+  padding:12px 25px;
+  border:none;
+  border-radius:30px;
+  background: linear-gradient(45deg,#00c6ff,#0072ff);
+  color:white;
+  cursor:pointer;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+.status {
+  margin:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>🐟 Fish Feeder</h1>
+
+  <div class="status" id="status">
+    Waiting...
+  </div>
+
+  <button onclick="feedNow()">Feed Now</button>
+</div>
+
+<script>
+function feedNow(){
+    document.getElementById("status").innerText="Triggering...";
+
+    fetch("/api/manual-feed/")
+    .then(res=>res.json())
+    .then(data=>{
+        if(data.success){
+            document.getElementById("status").innerText="Feeding Started 🐟";
+        }else{
+            document.getElementById("status").innerText="Failed ❌";
+        }
+    })
+    .catch(()=>{
+        document.getElementById("status").innerText="Server Error ⚠️";
+    });
+}
+</script>
+
+</body>
+</html>
